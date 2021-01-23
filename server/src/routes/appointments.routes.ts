@@ -5,7 +5,7 @@ import {Router} from 'express'
 import {parseISO} from 'date-fns' // -parseISO converte um date formato string para um formato Date nativo do JS
 
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
-import CreateAppointmentService from '../services/CreateAppointmentService'
+import CreateAppointmentService from '../services/CreateAppointmentService';
 
 const appointmentsRouter = Router();
 const appointmentsRepository = new AppointmentsRepository();
@@ -20,14 +20,14 @@ appointmentsRouter.post('/', (request, response) => {
     const {provider, date} = request.body; //receber requisição
     const parsedDate = parseISO(date); //transformar valor da requisição
 
-    const createAppointment = new CreateAppointmentService(appointmentsRepository) // passar os dados para outro arquivo
+    const createAppointment = new CreateAppointmentService(appointmentsRepository); // passar os dados para outro arquivo
 
     const appointment = createAppointment.execute({
       date: parsedDate,
       provider
     }); // passar os dados para outro arquivo
 
-    return response.json(appointment) //retornar resposta
+    return response.json(appointment); //retornar resposta
   } catch(err) {
     // o catch vai pegar qualquer erro que alguma das funções dispare, ex: throw Error('...')
     // dentro do err vai receber apenas o err.message
