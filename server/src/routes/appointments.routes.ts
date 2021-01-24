@@ -21,23 +21,18 @@ appointmentsRouter.get('/', async (request, response) => {
 })
 
 appointmentsRouter.post('/', async (request, response) => {
-  try{
-    const {provider_id, date} = request.body; //receber requisição
-    const parsedDate = parseISO(date); //transformar valor da requisição
+  const {provider_id, date} = request.body; //receber requisição
+  const parsedDate = parseISO(date); //transformar valor da requisição
 
-    const createAppointment = new CreateAppointmentService(); // passar os dados para outro arquivo
+  const createAppointment = new CreateAppointmentService(); // passar os dados para outro arquivo
 
-    const appointment = await createAppointment.execute({
-      date: parsedDate,
-      provider_id
-    }); // passar os dados para outro arquivo
+  const appointment = await createAppointment.execute({
+    date: parsedDate,
+    provider_id
+  }); // passar os dados para outro arquivo
 
-    return response.json(appointment); //retornar resposta
-  } catch(err) {
-    // o catch vai pegar qualquer erro que alguma das funções dispare, ex: throw Error('...')
-    // dentro do err vai receber apenas o err.message
-    return response.status(400).json({error: err.message})
-  }
+  return response.json(appointment); //retornar resposta
+
 })
 
 export default appointmentsRouter

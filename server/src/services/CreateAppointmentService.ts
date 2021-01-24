@@ -5,6 +5,8 @@ import {startOfHour} from 'date-fns'; // -startOfHour pega uma o timestamp e col
 import Appointment from '../models/Appointment';
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
 
+import  AppError from '../errors/AppError'
+
 interface Request {
   provider_id: string;
   date: Date;
@@ -22,7 +24,7 @@ class CreateAppointmentService {
 
     if(findAppointmentInSameDate) {
       // como os services não tem acesso ao request e ao response vamos tratar os error dessa forma:
-      throw Error('This appointment is already booked');
+      throw new AppError('This appointment is already booked');
     }
 
     // acessar o metodo da classe Appointment
