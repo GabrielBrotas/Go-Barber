@@ -1,12 +1,12 @@
 import {MigrationInterface, QueryRunner, Table} from "typeorm";
 
-export class CreateUser1611444031193 implements MigrationInterface {
+export class CreateUsers1611447340162 implements MigrationInterface {
 
   // faz as mudanças (cria, altera, etc..)
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name:"appointments",
+        name:"users",
         columns: [
           {
             name: 'id',
@@ -16,12 +16,17 @@ export class CreateUser1611444031193 implements MigrationInterface {
             default: 'uuid_generate_v4()'
           },
           {
-            name: 'provider',
+            name: 'name',
             type: 'varchar',
           },
           {
-            name: 'date',
-            type: 'timestamp with time zone',
+            name: 'email',
+            type: 'varchar',
+            isUnique: true,
+          },
+          {
+            name: 'password',
+            type: 'varchar',
           },
           {
             name: 'created_at',
@@ -41,7 +46,7 @@ export class CreateUser1611444031193 implements MigrationInterface {
 
   // metodo down desfaz o que o up cria
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('appointments')
+    await queryRunner.dropTable('users')
   }
 
 }
