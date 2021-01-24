@@ -19,6 +19,8 @@ usersRouter.post('/', async (request, response) => {
       password,
     })
 
+    delete user.password;
+
     return response.json(user)
   } catch(err) {
     // o catch vai pegar qualquer erro que alguma das funções dispare, ex: throw Error('...')

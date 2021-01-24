@@ -1,5 +1,5 @@
 // ? Persistência (local onde vai ficar amazenado os dados) <-> Repositório <-> Rota
-// ? Repositorio é o responsável por tudo que vai mexer nos dados de alguma forma, exemplo: find, create, delete, etc...
+// ? Repositorio é o responsável por tudo que vai mexer nos dados de alguma forma, exemplo: find, create, delete, etc..., essa pasta só é necessária se for ter algum comando especifico ex: findByDate, pois a maioria dos comando a propria entidade do typeorm ja fornece para nós
 import {EntityRepository, Repository} from 'typeorm'
 
 import Appointment from '../models/Appointment'
