@@ -1,5 +1,5 @@
 // ? Models ou Entidade, vai armazenar o formato de um dado que vai ser salvo no banco de dados
-import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from 'typeorm'
+import {Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn} from 'typeorm'
 
 import User from './User'
 
@@ -19,7 +19,7 @@ class Appointment {
   @Column('timestamp with time zone')
   date: Date;
 
-  @UpdateDateColumn()
+  @CreateDateColumn()
   created_at: Date;
 
   @UpdateDateColumn()
