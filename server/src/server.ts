@@ -2,6 +2,7 @@ import 'reflect-metadata';
 
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors' // para o express ser capaz de lidar com as rotas assincronas
+import cors from 'cors';
 
 import routes from './routes/index';
 import uploadConfig from './config/upload';
@@ -10,6 +11,7 @@ import AppError from './errors/AppError'
 import './database';
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 // rota de arquivos estaticos, o que vem depois de '/files' vai ser o nome do arquivo e vai ser mostrado de forma estatica. assim podemos ver o conteudo da imagem
