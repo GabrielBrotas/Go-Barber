@@ -4,15 +4,16 @@ import SignIn from './Pages/SignIn';
 import SignUp from './Pages/SignUp';
 import GlobalStyle from './styles/global';
 
-import { AuthProvider } from './hooks/AuthContext';
+import AppProvider from './hooks';
 
 const App: React.FC = () => {
   return (
     <>
       {/* o provider vai dizer quais rotas terão acesso a este context  */}
-      <AuthProvider>
+      <AppProvider>
         <SignIn />
-      </AuthProvider>
+      </AppProvider>
+
       <GlobalStyle />
     </>
   );
