@@ -1,5 +1,6 @@
 import React, { useCallback, useRef } from 'react';
 import { FiLock, FiArrowLeft, FiUser, FiMail } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 import { Form } from '@unform/web'; // O Form vai monitorar o elementos input dentro dele e pegar os valores sem precisar criar estados, isso vai ajudar da performance pois no estado sempre que o valor é alterado o componente tem que ser renderizado novamente.
 import { FormHandles } from '@unform/core'; // atributos que podemos ter de um form
 
@@ -8,7 +9,7 @@ import getValidationErrors from '../../utils/getValidationErrors';
 
 import logoImg from '../../assets/logo.svg';
 
-import { Container, Content, Background } from './styles';
+import { Container, Content, Background, AnimationContainer } from './styles';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -48,28 +49,30 @@ const SignUp: React.FC = () => {
       <Background />
 
       <Content>
-        <img src={logoImg} alt="logo" />
+        <AnimationContainer>
+          <img src={logoImg} alt="logo" />
 
-        <Form onSubmit={handleSubmit} ref={formRef}>
-          <h1>Faça seu cadastro</h1>
+          <Form onSubmit={handleSubmit} ref={formRef}>
+            <h1>Faça seu cadastro</h1>
 
-          <Input name="name" icon={FiUser} placeholder="Nome" />
+            <Input name="name" icon={FiUser} placeholder="Nome" />
 
-          <Input name="email" icon={FiMail} placeholder="E-mail" />
-          <Input
-            name="password"
-            icon={FiLock}
-            type="password"
-            placeholder="Password"
-          />
+            <Input name="email" icon={FiMail} placeholder="E-mail" />
+            <Input
+              name="password"
+              icon={FiLock}
+              type="password"
+              placeholder="Password"
+            />
 
-          <Button type="submit">Cadastrar</Button>
-        </Form>
+            <Button type="submit">Cadastrar</Button>
+          </Form>
 
-        <a href="criar">
-          <FiArrowLeft />
-          Voltar para logon
-        </a>
+          <Link to="/">
+            <FiArrowLeft />
+            Voltar para logon
+          </Link>
+        </AnimationContainer>
       </Content>
     </Container>
   );
