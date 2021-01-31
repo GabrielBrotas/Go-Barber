@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import { TextInputProps } from 'react-native';
 import { useField } from '@unform/core'
 
@@ -13,12 +13,23 @@ interface InputValueReference {
   value: string;
 };
 
-const Input: React.FC<InputProps> = ({ name, icon, ...rest }) => {
+interface InputRef {
+  focus(): void // função que queremos dentro do ref
+}
+
+// a ref não é passada como qualquer outro parametro, ela é passada separadamente
+// para podermos usar o ref do elementro precisamos usar o FowardRefRenderFunction que aceita o ref vindo do parametro e no primeiro parametro <> dele precisamos dizer qual o tipo de ref que vamos utilizar
+const Input: React.ForwardRefRenderFunction<InputRef, InputProps> = ({ name, icon, ...rest }, ref) => {
   const inputElementRef = useRef<any>(null);
 
   const { registerField, defaultValue = '', fieldName, error } = useField(name);
-
   const inputValueRef = useRef<InputValueReference>({ value: defaultValue}); // para ter acesso ao inputText
+
+  useImperativeHandle(ref, () => ({
+    focus() {
+      inputElementRef.current.focus();
+    },
+  }))
 
   useEffect(() => {
     registerField<string>({
@@ -45,6 +56,7 @@ const Input: React.FC<InputProps> = ({ name, icon, ...rest }) => {
       <Icon name={icon} size={20} color="#666360" />
 
       <TextInput
+      ref={inputElementRef}
       keyboardAppearance="dark"
       placeholderTextColor="#666360"
       defaultValue={defaultValue}
@@ -57,4 +69,4 @@ const Input: React.FC<InputProps> = ({ name, icon, ...rest }) => {
   )
 }
 
-export default Input
+export default forwardRef(Input);
