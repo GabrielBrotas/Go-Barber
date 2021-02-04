@@ -16,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 // rota de arquivos estaticos, o que vem depois de '/files' vai ser o nome do arquivo e vai ser mostrado de forma estatica. assim podemos ver o conteudo da imagem
-app.use('/files', express.static(uploadConfig.directory))
+app.use('/files', express.static(uploadConfig.uploadsFolder))
 app.use('/', routes);
 
 // tratativa de erros, ele tem que vim depois das rotas,

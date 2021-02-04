@@ -5,7 +5,8 @@ import multer from 'multer'
 const tmpFolder = path.resolve(__dirname, '..', '..', 'tmp')
 
 export default {
-  directory: tmpFolder,
+  tmpFolder,
+  uploadsFolder: path.resolve(tmpFolder, 'uploads'),
 
   storage: multer.diskStorage({
     // local onde as imagens vao ser salvas
