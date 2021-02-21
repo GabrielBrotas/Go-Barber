@@ -30,7 +30,7 @@ describe('CreateAppointment', () => {
     });
 
     // esperamos o código retorne um erro que seja da instancia de um Error geral do JS ou do nosso personalizado
-    expect(createAppointment.execute({
+    await expect(createAppointment.execute({
       date: appointmentDate,
       provider_id: '123123123',
     })).rejects.toBeInstanceOf(AppError)

@@ -41,7 +41,7 @@ describe('CreateUser', () => {
     });
 
     // esperamos o código retorne um erro que seja da instancia de um Error geral do JS ou do nosso personalizado
-    expect(
+    await expect(
       createUser.execute({
         name: 'Elon Musk',
         email: 'elonmusk@gmail.com',
