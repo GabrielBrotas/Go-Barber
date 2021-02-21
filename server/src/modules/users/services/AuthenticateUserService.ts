@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
-import { sign  } from 'jsonwebtoken';
+import { sign } from 'jsonwebtoken';
 
-import  AppError from '@shared/errors/AppError';
+import AppError from '@shared/errors/AppError';
 import authConfig from '@config/auth';
 
 import IUsersRepository from '../repositories/IUsersRepository';
@@ -19,7 +19,7 @@ interface IResponse {
 }
 
 @injectable()
-class AuthenticateUserService{
+class AuthenticateUserService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
@@ -28,26 +28,29 @@ class AuthenticateUserService{
     private hashProvider: IHashProvider,
   ) {}
 
-  public async execute({email, password}: IRequest): Promise<IResponse> {
+  public async execute({ email, password }: IRequest): Promise<IResponse> {
     const user = await this.usersRepository.findByEmail(email);
 
-    if(!user) {
-      throw new AppError("Invalid Email/Password combination.", 401);
-    };
+    if (!user) {
+      throw new AppError('Invalid Email/Password combination.', 401);
+    }
 
-    if(!user.password) throw new AppError("Invalid Password", 400);
+    if (!user.password) throw new AppError('Invalid Password', 400);
 
-    const passwordMatched = await this.hashProvider.compareHash(password, user.password);
+    const passwordMatched = await this.hashProvider.compareHash(
+      password,
+      user.password,
+    );
 
-    if(!passwordMatched) {
-      throw new AppError("Invalid Email/Password combination.", 401);
-    };
+    if (!passwordMatched) {
+      throw new AppError('Invalid Email/Password combination.', 401);
+    }
 
-    const {secret, expiresIn} = authConfig.jwt;
+    const { secret, expiresIn } = authConfig.jwt;
 
     const token = sign({}, secret, {
       subject: user.id, // id do usuario
-      expiresIn //tempo de duração do token
+      expiresIn, // tempo de duração do token
     });
 
     return { user, token };

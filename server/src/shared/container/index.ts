@@ -18,11 +18,11 @@ import UsersRepository from '@modules/users/infra/typeorm/repositories/UsersRepo
 // (nome do id desse repositorio quando for chamado, valor)
 container.registerSingleton<IAppointmentsRepository>(
   'AppointmentsRepository',
-  AppointmentsRepository
+  AppointmentsRepository,
 );
 
 // (nome do id desse repositorio quando for chamado, valor)
 container.registerSingleton<IUsersRepository>(
   'UsersRepository',
-  UsersRepository
+  UsersRepository,
 );

@@ -1,8 +1,7 @@
+import AppError from '@shared/errors/AppError';
 import FakeUsersRepository from '../repositories/fakes/FakeUsersRepository';
 import FakeHashProvider from '../providers/HashProvider/fakes/FakeHashProvider';
 import CreateUserService from './CreateUserService';
-
-import AppError from '@shared/errors/AppError';
 
 // o describe cria uma categoria para o teste
 describe('CreateUser', () => {
@@ -13,17 +12,17 @@ describe('CreateUser', () => {
 
     const createUser = new CreateUserService(
       fakeUsersRepository,
-      fakeHashProvider
+      fakeHashProvider,
     );
 
     const user = await createUser.execute({
       name: 'Elon Musk',
       email: 'elonmusk@gmail.com',
-      password: '123456'
+      password: '123456',
     });
 
     expect(user).toHaveProperty('id');
-  })
+  });
 
   it('should not be able to create two user with same email', async () => {
     const fakeUsersRepository = new FakeUsersRepository();
@@ -31,13 +30,13 @@ describe('CreateUser', () => {
 
     const createUser = new CreateUserService(
       fakeUsersRepository,
-      fakeHashProvider
+      fakeHashProvider,
     );
 
     await createUser.execute({
       name: 'Elon Musk',
       email: 'elonmusk@gmail.com',
-      password: '123456'
+      password: '123456',
     });
 
     // esperamos o código retorne um erro que seja da instancia de um Error geral do JS ou do nosso personalizado
@@ -45,8 +44,8 @@ describe('CreateUser', () => {
       createUser.execute({
         name: 'Elon Musk',
         email: 'elonmusk@gmail.com',
-        password: '123456'
-      })
-    ).rejects.toBeInstanceOf(AppError)
-  })
-})
+        password: '123456',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+});

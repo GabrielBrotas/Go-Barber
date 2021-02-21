@@ -1,19 +1,18 @@
 // ? Models ou Entidade, vai armazenar o formato de um dado que vai ser salvo no banco de dados
 import {
-Column,
-Entity,
-JoinColumn,
-ManyToOne,
-PrimaryGeneratedColumn,
-UpdateDateColumn,
-CreateDateColumn
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+  CreateDateColumn,
 } from 'typeorm';
 
 import User from '@modules/users/infra/typeorm/entities/User';
 
 @Entity('appointments')
 class Appointment {
-
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -21,7 +20,7 @@ class Appointment {
   provider_id: string;
 
   @ManyToOne(() => User)
-  @JoinColumn({name: 'provider_id'}) // qual coluna que vai identificar qual o prestador do agendamento
+  @JoinColumn({ name: 'provider_id' }) // qual coluna que vai identificar qual o prestador do agendamento
   provider: User;
 
   @Column('timestamp with time zone')
@@ -32,6 +31,6 @@ class Appointment {
 
   @UpdateDateColumn()
   updated_at: Date;
-};
+}
 
 export default Appointment;

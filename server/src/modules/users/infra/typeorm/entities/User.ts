@@ -1,9 +1,14 @@
 // ? Models ou Entidade, vai armazenar o formato de um dado que vai ser salvo no banco de dados
-import {Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn} from 'typeorm'
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity('users')
 class User {
-
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -26,4 +31,4 @@ class User {
   updated_at: Date;
 }
 
-export default User
+export default User;

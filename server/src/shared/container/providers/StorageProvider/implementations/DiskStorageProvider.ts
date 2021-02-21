@@ -1,3 +1,4 @@
+// salvar os arquivos no disco
 import fs from 'fs';
 import path from 'path';
 import uploadConfig from '@config/upload';
@@ -11,7 +12,7 @@ class DiskStorageProvider implements IStorageProvider {
       // mover o arquivo para a pasta uploads
       path.resolve(uploadConfig.tmpFolder, file),
       path.resolve(uploadConfig.uploadsFolder, file),
-    )
+    );
 
     return file;
   }
@@ -28,7 +29,6 @@ class DiskStorageProvider implements IStorageProvider {
 
     await fs.promises.unlink(filePath);
   }
-
 }
 
-export default DiskStorageProvider
+export default DiskStorageProvider;
