@@ -33,7 +33,7 @@ class SendForgotPasswordEmailService {
 
     this.mailProvider.sendMail(
       email,
-      'pedido de recuperação de senha recebido',
+      'pedido de recuperação de senha   ',
     );
   }
 }
