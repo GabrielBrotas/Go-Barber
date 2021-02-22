@@ -1,16 +1,20 @@
 import nodemailer, { Transporter } from 'nodemailer';
+import { injectable, inject } from 'tsyringe';
+
+// injeção de dependencia dentro de um provider pois esse provider depende de outro
+import IMailTemplateProvider from '@shared/container/providers/MailTemplateProvider/models/IMailTemplateProvider';
 
 import IMailProvider from '../models/IMailProvider';
+import ISendMailDTO from '../dtos/ISendMailDTO';
 
-interface IMessage {
-  to: string;
-  body: string;
-}
-
+@injectable()
 export default class EtherealMailProvider implements IMailProvider {
   private client: Transporter;
 
-  constructor() {
+  constructor(
+    @inject('MailTemplateProvider')
+    private mailTemplateProvider: IMailTemplateProvider,
+  ) {
     // configurações iniciais
     nodemailer.createTestAccount().then(account => {
       const transporter = nodemailer.createTransport({
@@ -27,12 +31,23 @@ export default class EtherealMailProvider implements IMailProvider {
     });
   }
 
-  public async sendMail(to: string, body: string): Promise<void> {
+  public async sendMail({
+    to,
+    from,
+    subject,
+    templateData,
+  }: ISendMailDTO): Promise<void> {
     const message = await this.client.sendMail({
-      from: 'equipe go barber <teste@gmail.com>',
-      to,
-      subject: 'Recuperação de senha',
-      text: body,
+      from: {
+        name: from?.name || 'Equipe Go Barber',
+        address: from?.email || 'equipe@gobarber.com.br',
+      },
+      to: {
+        name: to.name,
+        address: to.email,
+      },
+      subject,
+      html: await this.mailTemplateProvider.parse(templateData),
     });
 
     console.log('Message sent: %s', message.messageId);
