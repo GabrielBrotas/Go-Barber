@@ -4,7 +4,7 @@ import { container } from 'tsyringe';
 
 import CreateAppointmentService from '@modules/appointments/services/CreateAppointmentService';
 
-export default class AppointmentController {
+export default class AppointmentsController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { provider_id, date } = request.body; // receber requisição
     const parsedDate = parseISO(date); // transformar valor da requisição
