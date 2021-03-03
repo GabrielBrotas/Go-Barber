@@ -53,6 +53,7 @@ class AppointmentsRepository implements IAppointmentsRepository {
   }
 
   public async create({
+    user_id,
     provider_id,
     date,
   }: ICreateAppointmentDTO): Promise<Appointment> {
@@ -61,7 +62,7 @@ class AppointmentsRepository implements IAppointmentsRepository {
     // appointment.id = v4();
     // appointment.date = date;
     // appointment.provider_id = provider_id;
-    Object.assign(appointment, { id: v4(), date, provider_id });
+    Object.assign(appointment, { id: v4(), date, provider_id, user_id });
 
     this.appointments.push(appointment);
 

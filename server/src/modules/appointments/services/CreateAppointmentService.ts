@@ -9,6 +9,7 @@ import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 
 interface IRequest {
   provider_id: string;
+  user_id: string;
   date: Date;
 }
 
@@ -23,7 +24,11 @@ class CreateAppointmentService {
   ) {}
 
   // sempre o service vai ter apenas um metodo chamado de execute ou run, que vai ser chamado para fazer o que ele foi criado para fazer
-  public async execute({ date, provider_id }: IRequest): Promise<Appointment> {
+  public async execute({
+    date,
+    provider_id,
+    user_id,
+  }: IRequest): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
     // como os dados do agendamento não são acessível fora da classe temos que acessar uma função dentro dela para verificar se a data já está agendada
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
@@ -38,6 +43,7 @@ class CreateAppointmentService {
     // acessar o metodo da classe Appointment
     const appointment = await this.appointmentsRepository.create({
       provider_id,
+      user_id,
       date: appointmentDate,
     });
 
