@@ -5,6 +5,7 @@ import { getRepository, Repository, Raw } from 'typeorm';
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
 import IFindAllInMonthProviderDTO from '@modules/appointments/dtos/IFindAllInMonthProviderDTO';
+import IFindAllInDayProviderDTO from '@modules/appointments/dtos/IFindAllInDayProviderDTO';
 
 import Appointment from '../entities/Appointment';
 
@@ -32,7 +33,7 @@ class AppointmentsRepository implements IAppointmentsRepository {
   }: IFindAllInMonthProviderDTO): Promise<Appointment[]> {
     // Vamos formatar o mes pois a função to-char do postgres vai retornar o mes no formato MM (05)
     // padStart =se o numero não tiver dois digitos eu quero que preencha a esquerda com 0
-    const parsedMonth = String(month).padStart(2, '0')
+    const parsedMonth = String(month).padStart(2, '0');
 
     const appointments = await this.ormRepository.find({
       where: {
@@ -41,6 +42,28 @@ class AppointmentsRepository implements IAppointmentsRepository {
         date: Raw(
           dateFieldName =>
             `to_char(${dateFieldName}, 'MM-YYYY') = '${parsedMonth}-${year}'`,
+        ), // to_char é uma função do postgres que vai formatar o valor para uma string
+      },
+    });
+
+    return appointments;
+  }
+
+  public async findAllInDayFromProvider({
+    provider_id,
+    day,
+    month,
+    year,
+  }: IFindAllInDayProviderDTO): Promise<Appointment[]> {
+    const parsedDay = String(day).padStart(2, '0');
+    const parsedMonth = String(month).padStart(2, '0');
+
+    const appointments = await this.ormRepository.find({
+      where: {
+        provider_id,
+        date: Raw(
+          dateFieldName =>
+            `to_char(${dateFieldName}, 'MM-YYYY') = '${parsedDay}-${parsedMonth}-${year}'`,
         ), // to_char é uma função do postgres que vai formatar o valor para uma string
       },
     });
