@@ -32,15 +32,17 @@ class CreateAppointmentService {
     const appointmentDate = startOfHour(date);
 
     if (isBefore(appointmentDate, Date.now())) {
-      throw new AppError("You can't create a appointment on an past date");
+      throw new AppError("You can't create an appointment on a past date.");
     }
 
     if (user_id === provider_id) {
-      throw new AppError("You can't create an appointment with yourself");
+      throw new AppError("You can't create an appointment with yourself.");
     }
 
     if (getHours(appointmentDate) < 8 || getHours(appointmentDate) > 17) {
-      throw new AppError('You can only create appointment between 8am and 5pm');
+      throw new AppError(
+        'You can only create appontments between 8am and 5pm.',
+      );
     }
 
     // como os dados do agendamento não são acessível fora da classe temos que acessar uma função dentro dela para verificar se a data já está agendada

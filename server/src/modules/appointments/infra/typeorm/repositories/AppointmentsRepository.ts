@@ -63,7 +63,7 @@ class AppointmentsRepository implements IAppointmentsRepository {
         provider_id,
         date: Raw(
           dateFieldName =>
-            `to_char(${dateFieldName}, 'MM-YYYY') = '${parsedDay}-${parsedMonth}-${year}'`,
+            `to_char(${dateFieldName}, 'DD-MM-YYYY') = '${parsedDay}-${parsedMonth}-${year}'`,
         ), // to_char é uma função do postgres que vai formatar o valor para uma string
       },
     });
