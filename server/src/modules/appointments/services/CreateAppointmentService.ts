@@ -1,6 +1,6 @@
 // ? Cada service é responsavel por apenas uma unica funcionalidade, neste caso criar um agendamento.
 // ? Os services são responsáveis pela regra de negócio da aplicação
-import { startOfHour } from 'date-fns'; // -startOfHour pega uma o timestamp e coloca o minuto, segundo, milisegundo como zero, mantem apenas a hora
+import { startOfHour, isBefore, getHours } from 'date-fns'; // -startOfHour pega uma o timestamp e coloca o minuto, segundo, milisegundo como zero, mantem apenas a hora
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
@@ -30,6 +30,19 @@ class CreateAppointmentService {
     user_id,
   }: IRequest): Promise<Appointment> {
     const appointmentDate = startOfHour(date);
+
+    if (isBefore(appointmentDate, Date.now())) {
+      throw new AppError("You can't create a appointment on an past date");
+    }
+
+    if (user_id === provider_id) {
+      throw new AppError("You can't create an appointment with yourself");
+    }
+
+    if (getHours(appointmentDate) < 8 || getHours(appointmentDate) > 17) {
+      throw new AppError('You can only create appointment between 8am and 5pm');
+    }
+
     // como os dados do agendamento não são acessível fora da classe temos que acessar uma função dentro dela para verificar se a data já está agendada
     const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
       appointmentDate,
