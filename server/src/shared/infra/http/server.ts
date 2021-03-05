@@ -3,6 +3,7 @@ import 'reflect-metadata';
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors'; // para o express ser capaz de lidar com as rotas assincronas
 import cors from 'cors';
+import { errors } from 'celebrate';
 
 import uploadConfig from '@config/upload';
 import AppError from '@shared/errors/AppError';
@@ -18,6 +19,7 @@ app.use(express.json());
 // rota de arquivos estaticos, o que vem depois de '/files' vai ser o nome do arquivo e vai ser mostrado de forma estatica. assim podemos ver o conteudo da imagem
 app.use('/files', express.static(uploadConfig.uploadsFolder));
 app.use('/', routes);
+app.use(errors());
 
 // tratativa de erros, ele tem que vim depois das rotas,
 // os middleware de erro tem 4 parametros, o erro, request, response e o next
