@@ -1,9 +1,10 @@
 // ? Cada service é responsavel por apenas uma unica funcionalidade, neste caso criar um agendamento.
 // ? Os services são responsáveis pela regra de negócio da aplicação
-import { startOfHour, isBefore, getHours } from 'date-fns'; // -startOfHour pega uma o timestamp e coloca o minuto, segundo, milisegundo como zero, mantem apenas a hora
+import { startOfHour, isBefore, getHours, format } from 'date-fns'; // -startOfHour pega uma o timestamp e coloca o minuto, segundo, milisegundo como zero, mantem apenas a hora
 import { injectable, inject } from 'tsyringe';
 
 import AppError from '@shared/errors/AppError';
+import INotificationsRepository from '@modules/notifications/repositories/INotificationsRepository';
 import Appointment from '../infra/typeorm/entities/Appointment';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 
@@ -21,6 +22,9 @@ class CreateAppointmentService {
     // a partir de agora o service depende da interface e não do repositorio em si
     @inject('AppointmentsRepository')
     private appointmentsRepository: IAppointmentsRepository, // o private vai automaticamente criar a variavel appointmentsRepository ao inves de definir ela no topo e usar o this.appointmentsRepository = appointmentsRepository;
+
+    @inject('NotificationsRepository')
+    private notificationsRepository: INotificationsRepository,
   ) {}
 
   // sempre o service vai ter apenas um metodo chamado de execute ou run, que vai ser chamado para fazer o que ele foi criado para fazer
@@ -60,6 +64,13 @@ class CreateAppointmentService {
       provider_id,
       user_id,
       date: appointmentDate,
+    });
+
+    const dateFormatted = format(appointmentDate, "dd/MM/yyyy 'às' HH:mm");
+
+    await this.notificationsRepository.create({
+      recipient_id: provider_id,
+      content: `Novo agendamento marcado para o dia ${dateFormatted}`,
     });
 
     return appointment;
