@@ -42,8 +42,6 @@ class ListProviderAppointmentsService {
         },
       );
 
-      console.log('buscou no Redis');
-
       await this.cacheProvider.save(cacheKey, appointments);
     }
 

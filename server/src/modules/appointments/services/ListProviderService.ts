@@ -29,7 +29,6 @@ class ListProviderService {
         except_user_id: user_id,
       });
 
-      console.log('A query no banco foi feita!');
       // o cache vai ser diferente para cada usuario pois na lista de users não deve conter o proprio que esta fazendo a requisição
       // o ':' no redis é uma subnivel de providers-list
       await this.cacheProvider.save(`providers-list:${user_id}`, users);
