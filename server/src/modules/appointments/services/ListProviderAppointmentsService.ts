@@ -1,6 +1,6 @@
 import { injectable, inject } from 'tsyringe';
 
-import ICahcheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
 import Appointment from '../infra/typeorm/entities/Appointment';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 
@@ -18,7 +18,7 @@ class ListProviderAppointmentsService {
     private appointmentsRepository: IAppointmentsRepository,
 
     @inject('CacheProvider')
-    private cacheProvider: ICahcheProvider,
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({
