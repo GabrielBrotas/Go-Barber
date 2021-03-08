@@ -17,10 +17,13 @@ class AppointmentsRepository implements IAppointmentsRepository {
   }
 
   // toda função assincrona retorna uma promisse, dentro dessa promisse vai ser um Appointment ou null
-  public async findByDate(date: Date): Promise<Appointment | undefined> {
+  public async findByDate(
+    date: Date,
+    provider_id: string,
+  ): Promise<Appointment | undefined> {
     // verifica se a data que a pessoa quer agendar já existe algum agendamento
     const findAppointment = await this.ormRepository.findOne({
-      where: { date },
+      where: { date, provider_id },
     });
 
     return findAppointment;
@@ -66,6 +69,7 @@ class AppointmentsRepository implements IAppointmentsRepository {
             `to_char(${dateFieldName}, 'DD-MM-YYYY') = '${parsedDay}-${parsedMonth}-${year}'`,
         ), // to_char é uma função do postgres que vai formatar o valor para uma string
       },
+      relations: ['user'],
     });
 
     return appointments;
