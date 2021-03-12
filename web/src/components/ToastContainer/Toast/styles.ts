@@ -3,7 +3,7 @@ import { animated } from 'react-spring'; // vai substituir a div para poder ter 
 
 interface ContainerProps {
   type?: 'success' | 'error' | 'info';
-  hasDescription: boolean;
+  hasDescription: number;
 }
 
 const toasTypeVariations = {
