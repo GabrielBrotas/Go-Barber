@@ -39,9 +39,13 @@ const AuthProvider: React.FC = ({ children }) => {
     const user = localStorage.getItem('@GoBarber:user');
 
     if (token && user) {
+      // executa quando o usuario dá um refresh na página, então temos que atualizar o header
+      api.defaults.headers.authorization = `Bearer ${token}`;
+
       // parse para transformar o stringify em JSON
       return { token, user: JSON.parse(user) };
     }
+
     return {} as AuthState;
   });
 
@@ -55,6 +59,9 @@ const AuthProvider: React.FC = ({ children }) => {
 
     localStorage.setItem('@GoBarber:token', token);
     localStorage.setItem('@GoBarber:user', JSON.stringify(user));
+
+    // definir um cabeçario padrão que vai acontecer em todas requisições adiante.
+    api.defaults.headers.authorization = `Bearer ${token}`;
 
     setData({ token, user });
   }, []);
