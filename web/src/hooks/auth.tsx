@@ -8,6 +8,7 @@ import api from '../services/api';
 interface User {
   id: string;
   name: string;
+  email: string;
   // eslint-disable-next-line camelcase
   avatar_url: string;
 }
@@ -26,6 +27,7 @@ interface AuthContextData {
   user: User;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): Promise<void>;
+  updateUser(user: User): void;
 }
 
 // informação do usuario que está logado.
@@ -73,8 +75,22 @@ const AuthProvider: React.FC = ({ children }) => {
     setData({} as AuthState);
   }, []);
 
+  const updateUser = useCallback(
+    (user: User) => {
+      localStorage.setItem('@GoBarber:user', JSON.stringify(user));
+
+      setData({
+        token: data.token,
+        user,
+      });
+    },
+    [setData, data.token],
+  );
+
   return (
-    <AuthContext.Provider value={{ user: data.user, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{ user: data.user, signIn, signOut, updateUser }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -82,11 +98,6 @@ const AuthProvider: React.FC = ({ children }) => {
 
 function useAuth(): AuthContextData {
   const context = useContext(AuthContext);
-
-  // verificar se o local onde esse contexto está sendo utilizado está sendo coberto pelo provider
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
 
   return context;
 }
